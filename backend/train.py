@@ -52,5 +52,5 @@ def train_model(dataset_path, model_type, parameters):
     return model_filename, {
         "metric_name": metric_name,
         "metric_value": metric,
-        "metric_description": "Root Mean Squared Error (in dollars)" if metric_name == "rmse" else "Accuracy Score (0-1)"
+        "metric_description": "Root Mean Squared Error" if metric_name == "rmse" else "Accuracy Score (0-1)"
     }
