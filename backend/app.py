@@ -1,73 +1,53 @@
-from flask import Flask, request, jsonify, send_from_directory
-import os
-from werkzeug.utils import secure_filename
-from train import train_model
-from predict import predict_output
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+from api_operations import (
+    handle_file_upload, 
+    handle_prediction, 
+    handle_training,
+    get_datasets,
+    get_models
+)
 
 app = Flask(__name__)
+CORS(app)
 
-UPLOAD_FOLDER = "uploads"
-MODEL_FOLDER = "models"
-
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-os.makedirs(MODEL_FOLDER, exist_ok=True)
-
-app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-app.config["MODEL_FOLDER"] = MODEL_FOLDER
-ALLOWED_EXTENSIONS = {"csv", "xls", "xlsx"}
-
-def allowed_file(filename):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
-
-@app.route("/upload", methods=["POST"])
+@app.route('/upload', methods=['POST'])
 def upload_file():
-    if "file" not in request.files:
-        return jsonify({"error": "No file part"}), 400
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'})
+    return handle_file_upload(request.files['file'])
 
-    file = request.files["file"]
-    if file.filename == "":
-        return jsonify({"error": "No selected file"}), 400
-
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-        file.save(filepath)
-        return jsonify({"message": "File uploaded successfully", "filename": filename}), 200
-    return jsonify({"error": "Invalid file type"}), 400
-
-@app.route("/train", methods=["POST"])
-def train():
-    data = request.json
-    filename = data.get("filename")
-    model_type = data.get("model_type")
-    parameters = data.get("parameters", {})
-
-    if not filename or not model_type:
-        return jsonify({"error": "Filename and model type required"}), 400
-
-    dataset_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-    if not os.path.exists(dataset_path):
-        return jsonify({"error": "Dataset not found"}), 404
-
-    model_path, accuracy = train_model(dataset_path, model_type, parameters)
-    
-    return jsonify({"message": "Model trained successfully", "accuracy": accuracy, "model_path": model_path}), 200
-
-@app.route("/predict", methods=["POST"])
+@app.route('/predict', methods=['POST'])
 def predict():
-    data = request.json
-    model_name = data.get("model_name")
-    test_data = data.get("test_data")
+    data = request.get_json()
+    data_type = data.get('type')  # 'file' or 'direct'
+    input_data = data.get('data')
+    model_name = data.get('model')
+    return handle_prediction(data_type, input_data, model_name)
 
-    if not model_name or not test_data:
-        return jsonify({"error": "Model name and test data required"}), 400
+@app.route('/predict/file', methods=['POST'])
+def predict_file():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'})
+    file = request.files['file']
+    model_name = request.form.get('model')
+    return handle_prediction('file', file, model_name)
 
-    model_path = os.path.join(app.config["MODEL_FOLDER"], model_name)
-    if not os.path.exists(model_path):
-        return jsonify({"error": "Model not found"}), 404
+@app.route('/train', methods=['POST'])
+def train():
+    data = request.get_json()
+    dataset = data.get('dataset')
+    model_name = data.get('model')
+    parameters = data.get('parameters')
+    return handle_training(dataset, model_name, parameters)
 
-    predictions = predict_output(model_path, test_data)
-    return jsonify({"predictions": predictions}), 200
+@app.route('/datasets', methods=['GET'])
+def datasets():
+    return get_datasets()
 
-if __name__ == "__main__":
+@app.route('/models', methods=['GET'])
+def models():
+    return get_models()
+
+if __name__ == '__main__':
     app.run(debug=True)
