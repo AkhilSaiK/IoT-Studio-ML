@@ -37,4 +37,5 @@ uploads/*
 models/*
 !models/.gitkeep 
 
-note.txt
+
+__pycache__/

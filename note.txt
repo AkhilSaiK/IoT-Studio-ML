@@ -1,6 +1,5 @@
-file_storage.py
-    save_uploaded_file:
-        what if the file name is already present
 
 http://localhost:5000/models
     returning both trained and available models
+
+predicted file is being stored in uploads
