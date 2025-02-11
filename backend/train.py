@@ -60,6 +60,14 @@ AVAILABLE_MODELS = {
             'kernel': 'rbf',
             'C': 1.0
         }
+    },
+    'linear_svc': {
+        'class': SVC,
+        'type': 'classification',
+        'parameters': {
+            'kernel': 'linear',
+            'C': 1.0
+        }
     }
 }
 
