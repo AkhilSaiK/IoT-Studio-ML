@@ -11,6 +11,7 @@ function Training() {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState('');
   const [trainingResult, setTrainingResult] = useState(null);
+  const [modelParams, setModelParams] = useState({});
 
   useEffect(() => {
     fetchDatasets();
@@ -33,6 +34,21 @@ function Training() {
     } catch (error) {
       console.error('Error fetching models:', error);
     }
+  };
+
+  const handleModelChange = (e) => {
+    const model = e.target.value;
+    setSelectedModel(model);
+    
+    const selectedModelDetails = availableModels.find(m => m.name === model);
+    if (selectedModelDetails) {
+      setModelParams(selectedModelDetails.parameters);
+    }
+  };
+
+  const handleParameterChange = (e) => {
+    const { name, value } = e.target;
+    setParameters(prev => ({ ...prev, [name]: value }));
   };
 
   const handleFileSelect = (e) => {
@@ -59,7 +75,6 @@ function Training() {
       await axios.post('http://localhost:5000/upload', formData);
       await fetchDatasets();
       setFile(null);
-      // Reset file input
       const fileInput = document.getElementById('file-upload');
       if (fileInput) fileInput.value = '';
     } catch (error) {
@@ -158,16 +173,39 @@ function Training() {
 
           <select
             value={selectedModel}
-            onChange={(e) => setSelectedModel(e.target.value)}
+            onChange={handleModelChange}
             className="w-full p-2 rounded bg-gray-700 text-white border-gray-600"
           >
             <option value="">Select Model</option>
             {availableModels.map((model) => (
-              <option key={model} value={model}>
-                {model.replace(/_/g, ' ').toUpperCase()}
+              <option key={model.name} value={model.name}>
+                {model.name.replace(/_/g, ' ').toUpperCase()} - {model.type}
               </option>
             ))}
           </select>
+
+          {selectedModel && modelParams && Object.keys(modelParams).length > 0 && (
+            <div className="bg-gray-700 p-4 rounded">
+              <h3 className="text-lg font-semibold text-white mb-2">
+                Custom Parameters
+              </h3>
+              {Object.keys(modelParams).map((param) => (
+                <div key={param} className="mb-2">
+                  <label className="text-gray-200" htmlFor={param}>
+                    {param}:
+                  </label>
+                  <input
+                    type="text"
+                    id={param}
+                    name={param}
+                    placeholder={modelParams[param]}
+                    onChange={handleParameterChange}
+                    className="w-full p-2 rounded bg-gray-600 text-white border-gray-500"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
 
           <button
             onClick={handleTrain}

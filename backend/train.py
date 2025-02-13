@@ -42,7 +42,7 @@ AVAILABLE_MODELS = {
         'type': 'classification',
         'parameters': {
             'n_estimators': 100,
-            'max_depth': None
+            'max_depth': 10
         }
     },
     'svr': {
@@ -72,8 +72,15 @@ AVAILABLE_MODELS = {
 }
 
 def get_available_model_names():
-    """Return list of available models that can be trained"""
-    return list(AVAILABLE_MODELS.keys())
+    """Return list of available models that can be trained with their details"""
+    return [
+        {
+            'name': model_name,
+            'type': model_info['type'],
+            'parameters': model_info['parameters']
+        }
+        for model_name, model_info in AVAILABLE_MODELS.items()
+    ]
 
 def train_model(dataset_name, model_name, parameters=None):
     """
