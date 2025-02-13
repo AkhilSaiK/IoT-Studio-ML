@@ -48,7 +48,21 @@ function Training() {
 
   const handleParameterChange = (e) => {
     const { name, value } = e.target;
-    setParameters(prev => ({ ...prev, [name]: value }));
+
+    // Determine the expected type of the parameter
+    const expectedType = modelParams[name];
+
+    // Convert the value based on the expected type
+    let convertedValue = value; // Default to string
+    if (expectedType !== undefined) {
+      if (typeof expectedType === 'number') {
+        convertedValue = parseFloat(value); // Convert to float
+      } else if (expectedType === 'int') {
+        convertedValue = parseInt(value, 10); // Convert to integer
+      }
+    }
+
+    setParameters(prev => ({ ...prev, [name]: convertedValue })); // Update parameters state
   };
 
   const handleFileSelect = (e) => {
