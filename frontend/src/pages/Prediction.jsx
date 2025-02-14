@@ -58,8 +58,8 @@ function Prediction() {
   };
 
   return (
-    <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold mb-4 text-white">
+    <div className="bg-white bg-opacity-85 p-6 rounded-lg shadow-lg">
+      <h2 className="text-2xl font-bold mb-4 text-black">
         Make Predictions
       </h2>
       
@@ -67,7 +67,7 @@ function Prediction() {
         <select
           value={selectedModel}
           onChange={(e) => setSelectedModel(e.target.value)}
-          className="w-full p-2 rounded bg-gray-700 text-white border-gray-600"
+          className="w-full p-2 bg-white bg-opacity-50 text-black border-gray-600"
         >
           <option value="">Select Model</option>
           {trainedModels.map((model) => (
@@ -104,7 +104,7 @@ function Prediction() {
           <textarea
             value={directInput}
             onChange={(e) => setDirectInput(e.target.value)}
-            className="w-full p-2 rounded bg-gray-700 text-white border-gray-600"
+            className="w-full p-2 bg-white bg-opacity-50 text-black border-gray-600"
             rows="4"
             placeholder="Enter your input data. Eg: [[1, 2, 3], [4, 5, 6]]"
           />
@@ -114,14 +114,14 @@ function Prediction() {
               type="file"
               accept={supportedFormats}
               onChange={(e) => setFile(e.target.files[0])}
-              className="block w-full text-gray-400
+              className="block w-full text-gray-600
                 file:mr-4 file:py-2 file:px-4
                 file:rounded-full file:border-0
                 file:text-sm file:font-semibold
-                file:bg-gray-700 file:text-white
+                file:bg-white bg-opacity-50 file:text-black
                 hover:file:bg-gray-600"
             />
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-gray-600">
               Supported formats: {supportedFormats}
             </p>
           </div>
@@ -135,11 +135,11 @@ function Prediction() {
         </button>
 
         {predictions && (
-          <div className="mt-4 p-4 bg-gray-700 rounded">
-            <h3 className="text-lg font-semibold mb-2 text-white">
+          <div className="mt-4 p-4 bg-white bg-opacity-50 rounded">
+            <h3 className="text-lg font-semibold mb-2 text-black">
               Predictions:
             </h3>
-            <pre className="text-sm text-gray-300">
+            <pre className="text-sm text-black">
               {JSON.stringify(predictions, null, 2)}
             </pre>
           </div>

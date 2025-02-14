@@ -129,8 +129,8 @@ function Training() {
 
   return (
     <div className="space-y-8">
-      <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold mb-4 text-white">
+      <div className="bg-white bg-opacity-85 p-6 rounded-lg shadow-lg">
+        <h2 className="text-2xl font-bold mb-4 text-black">
           Upload Dataset
         </h2>
         <div className="space-y-4">
@@ -144,7 +144,7 @@ function Training() {
                 accept=".csv,.xlsx,.xls"
               />
               <div className="flex items-center space-x-2">
-                <span className="flex-1 px-4 py-2 bg-gray-700 text-gray-200 rounded-l cursor-pointer hover:bg-gray-600 truncate">
+                <span className="flex-1 px-4 py-2 bg-white bg-opacity-50 text-black rounded-l cursor-pointer hover:bg-gray-100 truncate">
                   {file ? file.name : 'Choose file'}
                 </span>
                 <button
@@ -152,8 +152,8 @@ function Training() {
                   disabled={!file || uploading}
                   className={`px-4 py-2 rounded-r font-semibold ${
                     !file || uploading
-                      ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      : 'bg-gray-700 text-white hover:bg-blue-700'
                   }`}
                 >
                   {uploading ? 'Uploading...' : 'Upload'}
@@ -167,15 +167,15 @@ function Training() {
         </div>
       </div>
 
-      <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold mb-4 text-white">
+      <div className="bg-white bg-opacity-85 p-6 rounded-lg shadow-lg">
+        <h2 className="text-2xl font-bold mb-4 text-black">
           Train Model
         </h2>
         <div className="space-y-4">
           <select
             value={selectedDataset}
             onChange={(e) => setSelectedDataset(e.target.value)}
-            className="w-full p-2 rounded bg-gray-700 text-white border-gray-600"
+            className="w-full p-2 rounded bg-white bg-opacity-50 text-black border-gray-600"
           >
             <option value="">Select Dataset</option>
             {datasets.map((dataset) => (
@@ -188,7 +188,7 @@ function Training() {
           <select
             value={selectedModel}
             onChange={handleModelChange}
-            className="w-full p-2 rounded bg-gray-700 text-white border-gray-600"
+            className="w-full p-2 rounded bg-white bg-opacity-50 text-black border-gray-600"
           >
             <option value="">Select Model</option>
             {availableModels.map((model) => (
@@ -199,13 +199,13 @@ function Training() {
           </select>
 
           {selectedModel && modelParams && Object.keys(modelParams).length > 0 && (
-            <div className="bg-gray-700 p-4 rounded">
-              <h3 className="text-lg font-semibold text-white mb-2">
+            <div className="bg-white bg-opacity-50 p-4 rounded">
+              <h3 className="text-lg font-semibold text-black mb-2">
                 Custom Parameters
               </h3>
               {Object.keys(modelParams).map((param) => (
                 <div key={param} className="mb-2">
-                  <label className="text-gray-200" htmlFor={param}>
+                  <label className="text-black" htmlFor={param}>
                     {param}:
                   </label>
                   <input
@@ -214,7 +214,7 @@ function Training() {
                     name={param}
                     placeholder={modelParams[param]}
                     onChange={handleParameterChange}
-                    className="w-full p-2 rounded bg-gray-600 text-white border-gray-500"
+                    className="w-full p-2 rounded bg-gray-100 text-black border-gray-500"
                   />
                 </div>
               ))}
@@ -226,8 +226,8 @@ function Training() {
             disabled={!selectedDataset || !selectedModel}
             className={`w-full py-2 px-4 rounded font-semibold ${
               !selectedDataset || !selectedModel
-                ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                : 'bg-blue-600 text-white hover:bg-blue-700'
+                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                : 'bg-gray-700 text-white hover:bg-blue-700'
             }`}
           >
             Train Model
@@ -236,44 +236,44 @@ function Training() {
       </div>
 
       {trainingResult && (
-        <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-bold mb-4 text-white">
+        <div className="bg-white bg-opacity-85 p-6 rounded-lg shadow-lg">
+          <h2 className="text-2xl font-bold mb-4 text-black">
             Training Results
           </h2>
           <div className="space-y-4">
-            <div className="bg-gray-700 p-4 rounded">
-              <h3 className="text-lg font-semibold text-white mb-2">
+            <div className="bg-white bg-opacity-50 p-4 rounded">
+              <h3 className="text-lg font-semibold text-black mb-2">
                 Model Information
               </h3>
-              <p className="text-gray-200">
+              <p className="text-black">
                 Filename: {trainingResult.model_filename}
               </p>
-              <p className="text-gray-200">
+              <p className="text-black">
                 Type: {trainingResult.metrics.model_type}
               </p>
             </div>
 
-            <div className="bg-gray-700 p-4 rounded">
-              <h3 className="text-lg font-semibold text-white mb-2">
+            <div className="bg-white bg-opacity-50 p-4 rounded">
+              <h3 className="text-lg font-semibold text-black mb-2">
                 Performance Metrics
               </h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-gray-200">
+                  <p className="text-black">
                     Training Score: {formatMetricValue(trainingResult.metrics.train_score)}
                   </p>
-                  <p className="text-gray-200">
+                  <p className="text-black">
                     Test Score: {formatMetricValue(trainingResult.metrics.test_score)}
                   </p>
                 </div>
                 <div>
                   {trainingResult.metrics.accuracy && (
-                    <p className="text-gray-200">
+                    <p className="text-black">
                       Accuracy: {formatMetricValue(trainingResult.metrics.accuracy)}
                     </p>
                   )}
                   {trainingResult.metrics.rmse && (
-                    <p className="text-gray-200">
+                    <p className="text-black">
                       RMSE: {formatMetricValue(trainingResult.metrics.rmse)}
                     </p>
                   )}
@@ -281,11 +281,11 @@ function Training() {
               </div>
             </div>
 
-            <div className="bg-gray-700 p-4 rounded">
-              <h3 className="text-lg font-semibold text-white mb-2">
+            <div className="bg-white bg-opacity-50 p-4 rounded">
+              <h3 className="text-lg font-semibold text-black mb-2">
                 Model Parameters
               </h3>
-              <pre className="text-sm text-gray-200 overflow-auto">
+              <pre className="text-sm text-black overflow-auto">
                 {JSON.stringify(trainingResult.metrics.parameters, null, 2)}
               </pre>
             </div>

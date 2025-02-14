@@ -6,7 +6,7 @@ import Prediction from './pages/Prediction';
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gray-900">
+      <div className="min-h-screen bg-black">
         <Navbar />
         <div className="container mx-auto px-4 py-8">
           <Routes>
