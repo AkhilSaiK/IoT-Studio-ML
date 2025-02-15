@@ -43,7 +43,7 @@ def handle_prediction(data_type, input_data, model_name):
             
             # Save to output file in the same format as input
             file_extension = os.path.splitext(input_data.filename)[1]
-            output_path = os.path.join(UPLOAD_FOLDER, 'predicted_output' + file_extension)
+            output_path = os.path.join(UPLOAD_FOLDER, 'predicted_' + input_data.filename)
             
             if file_extension.lower() == '.csv':
                 df.to_csv(output_path, index=False)

@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function Prediction() {
-  const [models, setModels] = useState([]);
   const [selectedModel, setSelectedModel] = useState('');
   const [predictionType, setPredictionType] = useState('direct');
   const [file, setFile] = useState(null);
@@ -40,7 +39,8 @@ function Prediction() {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', 'predictions.csv');
+        const predictedFileName = file.name.replace(/(\.[\w\d]+)$/, '_predictions$1');
+        link.setAttribute('download', predictedFileName); 
         document.body.appendChild(link);
         link.click();
         link.remove();
