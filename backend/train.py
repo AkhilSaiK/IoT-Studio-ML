@@ -133,7 +133,7 @@ def train_model(dataset_name, model_name, parameters=None):
             additional_metrics['rmse'] = np.sqrt(mse)
 
         # Create model filename and save
-        model_filename = f"{model_name}_{dataset_name}_{datetime.datetime.now().strftime('%d%m%Y_%H%M%S')}"
+        model_filename = f"{model_name}_{dataset_name}_{datetime.datetime.now().strftime('%d-%m-%Y_%H:%M:%S')}"
         metrics = {
             'train_score': float(train_score),
             'test_score': float(test_score),
